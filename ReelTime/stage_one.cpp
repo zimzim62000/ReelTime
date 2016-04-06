@@ -2,12 +2,15 @@
 #include <iostream>
 #include <string> 
 #include <math.h>
+#include "field.h"
 
 
 void stage_one::Initialize(sf::RenderWindow* window)
 {
 	this->manager = new EntityManager();
 
+	Entity* fields = new Field(this->manager, 150 , 150);
+	this->manager->Add("field", fields);
 	this->gameSpeed = new game_speed();
 	this->gameSpeed->Initialize(window);
 }

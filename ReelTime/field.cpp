@@ -6,7 +6,7 @@
 
 Field::Field(EntityManager* entityManager, float x, float y) : Entity()
 {
-	this->Load("field.png");
+	this->Load("fields2.png");
 	this->setPosition(x, y);
 	this->groupId = 1;
 	this->entityManager = entityManager;
@@ -15,12 +15,30 @@ Field::Field(EntityManager* entityManager, float x, float y) : Entity()
 	this->angle = 0;
 	this->setOrigin(0, 0);
 	this->IsONScene = true;
+	this->count = 4900;
+	this->countMax = 5000;
 }
 
-bool Field::Update(float const dt, sf::RenderWindow* window)
+bool Field::Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window)
 {
+	this->count++;
+	if (this->count > this->countMax) {
+		this->count = 0;
+		float tmp;
+		tmp = utility::randInt(100, false) + 1;
+		this->velocity.x = tmp / 50;
+		tmp = utility::randInt(100, false);
+		this->velocity.y = tmp / 50;
+	}
 
-	Entity::Update(dt, window);
+	if (this->getPosition().x < 0 || this->getPosition().x + this->getGlobalBounds().width> window->getSize().x) {
+		this->velocity.x *= -1;
+	}
+	if (this->getPosition().y < 0 || this->getPosition().y + this->getGlobalBounds().height > window->getSize().y) {
+		this->velocity.y *= -1;
+	}
+
+	Entity::Update(dt, gameSpeed, window);
 
 	return true;
 }

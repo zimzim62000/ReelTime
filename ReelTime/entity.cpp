@@ -107,9 +107,9 @@ void Entity::Load(std::string filename)
 	this->setTexture(*this->texture);
 }
 
-bool Entity::Update(float const dt, sf::RenderWindow* window)
+bool Entity::Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	this->move(this->velocity * this->speed * dt);
+	this->move(this->velocity * ( this->speed * dt * gameSpeed->getGameSpeed()));
 	this->AnimateMe(dt);
 	return true;
 }

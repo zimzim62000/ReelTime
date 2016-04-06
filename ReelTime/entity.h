@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include "game_speed.h"
 
 
 class Entity : public sf::Sprite
@@ -17,7 +18,7 @@ public:
 
 	void Load(std::string filename);
 
-	virtual bool Update(float const dt, sf::RenderWindow* window);
+	virtual bool Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window);
 
 	bool CheckCollision(Entity* entity);
 

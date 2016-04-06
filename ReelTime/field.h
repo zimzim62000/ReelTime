@@ -9,12 +9,13 @@ class Field : public Entity
 {
 public:
 	Field(EntityManager* entityManager, float x, float y);
-	bool Update(float const dt, sf::RenderWindow* window);
+	bool Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window);
 private:
 	float speed, speedAngle, angle, engine, brakes, speedMax;
 	EntityManager* entityManager;
 	bool spaceKey, xKey;
 	sf::Vector2f direction;
+	int count, countMax;
 };
 
 #endif Field_Zim
