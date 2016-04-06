@@ -1,15 +1,7 @@
-#ifndef GameState_Zim
-#define GameState_Zim
-
-
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "entity_manager.h"
-#include "entity.h"
-#include "game_speed.h"
-#include "config.h"
-#include "utility.h"
+
 
 class tiny_state
 {
@@ -87,5 +79,3 @@ private:
 
 extern game_state coreState;
 extern bool quitGame;
-
-#endif GameState_Zim

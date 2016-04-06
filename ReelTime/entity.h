@@ -1,6 +1,3 @@
-#ifndef Entity_Zim
-#define Entity_Zim
-
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -75,5 +72,3 @@ protected:
 private:
 	sf::Texture* texture;
 };
-
-#endif Entity_Zim

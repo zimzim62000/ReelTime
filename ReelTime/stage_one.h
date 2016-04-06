@@ -1,10 +1,8 @@
-#ifndef StageOne_Zim
-#define StageOne_Zim
-
 #pragma once
 
 #include "game_state.h"
 #include "entity_manager.h"
+#include "entity.h"
 #include "game_speed.h"
 
 
@@ -21,5 +19,3 @@ private:
 	EntityManager* manager;
 	Entity* Test;
 };
-
-#endif StageOne_Zim

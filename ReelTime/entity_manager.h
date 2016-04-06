@@ -1,9 +1,7 @@
-#ifndef EntityManager_Zim
-#define EntityManager_Zim
-
 #pragma once
 
-#include "game_state.h"
+#include "game_speed.h"
+#include "entity.h"
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
 
@@ -20,5 +18,3 @@ private:
 	std::unordered_map<std::string, Entity*> entities;
 	int numberId;
 };
-
-#endif EntityManager_Zim

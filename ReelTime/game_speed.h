@@ -1,9 +1,6 @@
-#ifndef GameSpeed_Zim
-#define GameSpeed_Zim
-
 #pragma once
 
-#include "game_state.h"
+#include <SFML/Graphics.hpp>
 
 class game_speed : public sf::Sprite
 {
@@ -27,7 +24,5 @@ private:
 	sf::Image* tileSetTexture, ImgPauseActive, ImgPauseInactive, ImgPlayActive, ImgPlayInactive;
 
 	int gameSpeed, gameSpeedMax, gameSpeedMin, tileWidth, tileHeight;
-	bool gamePause, subtractKey, addKey;
+	bool gamePause, subtractKey, addKey, echapKey;
 };
-
-#endif GameSpeed_Zim
