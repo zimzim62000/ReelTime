@@ -15,15 +15,15 @@ Field::Field(EntityManager* entityManager, float x, float y) : Entity()
 	this->angle = 0;
 	this->setOrigin(0, 0);
 	this->IsONScene = true;
-	this->count = 4900;
-	this->countMax = 5000;
+	this->count = 49;
+	this->countMax = 50;
 }
 
 bool Field::Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	this->count++;
+	this->count += gameSpeed->getGameSpeed() * dt;
 	if (this->count > this->countMax) {
-		this->count = 0;
+		this->count = 1;
 		float tmp;
 		tmp = utility::randInt(100, false) + 1;
 		this->velocity.x = tmp / 50;
