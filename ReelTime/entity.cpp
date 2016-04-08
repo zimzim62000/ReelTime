@@ -107,10 +107,10 @@ void Entity::Load(std::string filename)
 	this->setTexture(*this->texture);
 }
 
-bool Entity::Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window)
+bool Entity::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	this->move(this->velocity * ( this->speed * dt * gameSpeed->getGameSpeed()));
-	this->AnimateMe(dt);
+	this->move(this->velocity * this->speed * gameSpeed->getGameSpeedDeltaTime());
+	this->AnimateMe(gameSpeed->getDeltaTime());
 	return true;
 }
 void Entity::Collision(Entity* entity)

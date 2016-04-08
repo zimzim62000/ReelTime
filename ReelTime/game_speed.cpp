@@ -1,15 +1,18 @@
 #pragma once
 
 #include "game_speed.h"
+#include <iostream>
 
 game_speed::game_speed()
 {
 	this->gameSpeed = 1;
 	this->gameSpeedMin = 0;
 	this->gameSpeedMax = 5;
-	this->gamePause = false;
+	this->gamePause = this->gameTick = false;
 	this->tileWidth = 64;
 	this->tileHeight = 64;
+
+	this->deltaTime = this->deltaTimeCounter = this->deltaTimeSecond = 0;
 
 	this->texture = new sf::Texture();
 	this->tileSetTexture = new sf::Image();
@@ -38,9 +41,16 @@ void game_speed::Initialize(sf::RenderWindow* window)
 bool game_speed::Update(float const dt, sf::RenderWindow* window)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && !this->echapKey) {
-		this->gameSpeed = 0;
-		this->gamePause = true;
-		this->generateSprite();
+		if (this->gamePause == false) {
+			this->gameSpeed = 0;
+			this->gamePause = true;
+			this->generateSprite();
+		}
+		else {
+			this->gameSpeed = 1;
+			this->gamePause = false;
+			this->generateSprite();
+		}
 	}else{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) && !this->subtractKey) {
 			this->gameSpeed--;
@@ -60,16 +70,23 @@ bool game_speed::Update(float const dt, sf::RenderWindow* window)
 		}
 	}
 
+	if(this->gamePause == false){
+		this->gameTick = false;
+		this->deltaTime = dt;
+		this->deltaTimeCounter += dt;
+		this->deltaTimeSecond += dt;
+		if (this->deltaTimeSecond > 1000) {
+			std::cout << "delta time second 2 : " << this->deltaTimeSecond << std::endl;
+			this->gameTick = true;
+			this->deltaTimeSecond = 0;
+		}
+	}
+
 	this->echapKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 	this->subtractKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract);
 	this->addKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Add);
 
 	return true;
-}
-
-void game_speed::Render(float const dt, sf::RenderWindow* window)
-{
-
 }
 
 
@@ -88,6 +105,22 @@ bool game_speed::Paused()
 int game_speed::getGameSpeed()
 {
 	return this->gameSpeed;
+}
+
+float game_speed::getGameSpeedDeltaTime()
+{
+	float tmp = (this->gameSpeed * this->deltaTime);
+	return tmp;
+}
+
+float game_speed::getDeltaTime()
+{
+	return this->deltaTime;
+}
+
+bool game_speed::getGameTick()
+{
+	return this->gameTick;
 }
 
 void game_speed::generateSprite()

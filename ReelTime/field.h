@@ -9,7 +9,7 @@ class Field : public Entity
 {
 public:
 	Field(EntityManager* entityManager, float x, float y);
-	bool Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window);
+	bool Update(game_speed* gameSpeed, sf::RenderWindow* window);
 private:
 	float speed, speedAngle, angle, engine, brakes, speedMax;
 	EntityManager* entityManager;

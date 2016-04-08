@@ -19,15 +19,14 @@ void stage_one::Update(float const dt, sf::RenderWindow* window)
 {
 	this->gameSpeed->Update(dt, window);
 	if(!this->gameSpeed->Paused()){
-		this->manager->Update(dt, this->gameSpeed, window);
+		this->manager->Update(this->gameSpeed, window);
 	}
 }
 
 void stage_one::Render(float const dt, sf::RenderWindow* window)
 {
 	window->draw(*this->gameSpeed);
-	this->gameSpeed->Render(dt, window);
-	this->manager->Render(dt, this->gameSpeed, window);
+	this->manager->Render(this->gameSpeed, window);
 }
 
 void stage_one::Destroy(sf::RenderWindow* window)

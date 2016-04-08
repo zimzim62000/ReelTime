@@ -11,7 +11,7 @@ int main()
 	sf::ContextSettings antialiasing;
 	antialiasing.antialiasingLevel = 32;
 	sf::RenderWindow window(sf::VideoMode(Config::screen_width, Config::screen_height), "Reel Time", sf::Style::Close, antialiasing);
-	//window.setVerticalSyncEnabled(true);
+
 	coreState.SetWindow(&window);
 	coreState.SetState(new intro_menu());
 

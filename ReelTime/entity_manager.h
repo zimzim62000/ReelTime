@@ -10,8 +10,8 @@ class EntityManager
 public:
 	EntityManager();
 	void Add(std::string name, Entity* entity);
-	bool Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window);
-	void Render(float const dt, game_speed* gameSpeed, sf::RenderWindow* window);
+	bool Update(game_speed* gameSpeed, sf::RenderWindow* window);
+	void Render(game_speed* gameSpeed, sf::RenderWindow* window);
 	Entity* Get(std::string name);
 	Entity* GetAtThisPosition(const int x, const int y, const int tileWidth, const int tileHeight);
 private:
