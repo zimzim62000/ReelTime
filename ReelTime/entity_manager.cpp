@@ -18,15 +18,15 @@ void EntityManager::Add(std::string name, Entity* entity)
 	this->numberId++;
 }
 
-bool EntityManager::Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window)
+bool EntityManager::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
 	for(auto& iterator : this->entities){
-		iterator.second->Update(dt, gameSpeed, window);
+		iterator.second->Update(gameSpeed, window);
 	}
 	return true;
 }
 
-void EntityManager::Render(float const dt, game_speed* gameSpeed, sf::RenderWindow* window)
+void EntityManager::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 {
 	for (auto& iterator : this->entities) {
 		window->draw(*iterator.second);

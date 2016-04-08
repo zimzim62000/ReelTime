@@ -15,20 +15,23 @@ Field::Field(EntityManager* entityManager, float x, float y) : Entity()
 	this->angle = 0;
 	this->setOrigin(0, 0);
 	this->IsONScene = true;
-	this->count = 4900;
-	this->countMax = 5000;
+	this->count = 0;
+	this->countMax = 10;
 }
 
-bool Field::Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* window)
+bool Field::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	this->count++;
-	if (this->count > this->countMax) {
-		this->count = 0;
-		float tmp;
-		tmp = utility::randInt(100, false) + 1;
-		this->velocity.x = tmp / 50;
-		tmp = utility::randInt(100, false);
-		this->velocity.y = tmp / 50;
+	if (gameSpeed->getGameTick() == true) {
+		std::cout << "tick tick " << gameSpeed->getDeltaTime() << std::endl;
+		this->count++;
+		if (this->count > this->countMax) {
+			this->count = 0;
+			float tmp;
+			tmp = utility::randInt(100, false) + 1;
+			this->velocity.x = tmp / 50;
+			tmp = utility::randInt(100, false) + 1;
+			this->velocity.y = tmp / 50;
+		}
 	}
 
 	if (this->getPosition().x < 0 || this->getPosition().x + this->getGlobalBounds().width> window->getSize().x) {
@@ -38,7 +41,7 @@ bool Field::Update(float const dt, game_speed* gameSpeed, sf::RenderWindow* wind
 		this->velocity.y *= -1;
 	}
 
-	Entity::Update(dt, gameSpeed, window);
+	Entity::Update(gameSpeed, window);
 
 	return true;
 }
