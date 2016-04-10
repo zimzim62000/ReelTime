@@ -1,20 +1,21 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
+#include "game_speed.h"
 
 class tiny_state
 {
 public:
+
 	virtual void Initialize(sf::RenderWindow* window)
 	{
 	}
 
-	virtual void Update(float const dt, sf::RenderWindow* window)
+	virtual void Update(game_speed* game_speed, sf::RenderWindow* window)
 	{
 	}
 
-	virtual void Render(float const dt, sf::RenderWindow* window)
+	virtual void Render(game_speed* game_speed, sf::RenderWindow* window)
 	{
 	}
 
@@ -36,6 +37,11 @@ public:
 		this->window = window;
 	}
 
+	void SetGameSpeed(game_speed* gameSpeed)
+	{
+		this->gameSpeed = gameSpeed;
+	}
+
 	void SetState(tiny_state* state)
 	{
 		if (this->state != NULL)
@@ -53,14 +59,15 @@ public:
 	{
 		if (this->state != NULL)
 		{
-			this->state->Update(dt, this->window);
+			this->gameSpeed->setDeltaTime(dt);
+			this->state->Update(this->gameSpeed, this->window);
 		}
 	}
 	void Render(float const dt)
 	{
 		if (this->state != NULL)
 		{
-			this->state->Render(dt, this->window);
+			this->state->Render(this->gameSpeed, this->window);
 		}
 	}
 
@@ -74,6 +81,7 @@ public:
 private:
 	sf::RenderWindow* window;
 	tiny_state* state;
+	game_speed* gameSpeed;
 	float deltaT;
 };
 

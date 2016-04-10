@@ -9,8 +9,8 @@ class intro_menu : public tiny_state
 {
 public:
 	void Initialize(sf::RenderWindow* window);
-	void Update(float const dt, sf::RenderWindow* window);
-	void Render(float const dt, sf::RenderWindow* window);
+	void Update(game_speed* game_speed, sf::RenderWindow* window);
+	void Render(game_speed* game_speed, sf::RenderWindow* window);
 	void Destroy(sf::RenderWindow* window);
 private:
 	sf::Font* font;

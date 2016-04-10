@@ -1,6 +1,6 @@
 #include "entity.h"
 
-Entity::Entity(const float speed)
+Entity::Entity(const int speed)
 {
 	this->id = -1;
 	this->texture = new sf::Texture();
@@ -9,6 +9,7 @@ Entity::Entity(const float speed)
 	this->speed = speed;
 	this->IsAnimate = false;
 	this->IsONScene = false;
+	this->canMove = true;
 }
 
 Entity::Entity()
@@ -20,6 +21,7 @@ Entity::Entity()
 	this->speed = 1;
 	this->IsAnimate = false;
 	this->IsONScene = false;
+	this->canMove = true;
 }
 
 void Entity::setOnScene(const bool enable)
@@ -109,8 +111,9 @@ void Entity::Load(std::string filename)
 
 bool Entity::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	this->move(this->velocity * this->speed * gameSpeed->getGameSpeedDeltaTime());
+	this->move(this->velocity * ( this->speed * gameSpeed->getGameSpeedDeltaTime()));
 	this->AnimateMe(gameSpeed->getDeltaTime());
+	
 	return true;
 }
 void Entity::Collision(Entity* entity)

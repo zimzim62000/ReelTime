@@ -14,7 +14,7 @@ public:
 
 	Entity();
 
-	Entity(const float speed);
+	Entity(const int speed);
 
 	void Load(std::string filename);
 
@@ -51,9 +51,8 @@ protected:
 	void SetNewRightAnimation(std::string nameAnimation);
 	void SetNewLeftAnimation(std::string nameAnimation);
 
-	int active, groupId, id;
-	bool busy, onMove, IsAnimate, IsONScene;
-	float speed;
+	int active, groupId, id, speed;
+	bool busy, onMove, IsAnimate, IsONScene, canMove;
 	std::string name;
 
 	float animateMax;

@@ -4,29 +4,28 @@
 #include <math.h>
 #include "field.h"
 
-
 void stage_one::Initialize(sf::RenderWindow* window)
 {
 	this->manager = new EntityManager();
 
-	Entity* fields = new Field(this->manager, 150 , 150);
+	Entity* fields = new Field(this->manager, 150 , 150, 100);
 	this->manager->Add("field", fields);
-	this->gameSpeed = new game_speed();
-	this->gameSpeed->Initialize(window);
 }
 
-void stage_one::Update(float const dt, sf::RenderWindow* window)
+void stage_one::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	this->gameSpeed->Update(dt, window);
-	if(!this->gameSpeed->Paused()){
-		this->manager->Update(this->gameSpeed, window);
+	gameSpeed->Update(window);
+	if(!gameSpeed->Paused()){
+		this->manager->Update(gameSpeed, window);
 	}
 }
 
-void stage_one::Render(float const dt, sf::RenderWindow* window)
+void stage_one::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	window->draw(*this->gameSpeed);
-	this->manager->Render(this->gameSpeed, window);
+	window->draw(*gameSpeed);
+	window->draw(*gameSpeed->speedText);
+	window->draw(*gameSpeed->fpsText);
+	this->manager->Render(gameSpeed, window);
 }
 
 void stage_one::Destroy(sf::RenderWindow* window)

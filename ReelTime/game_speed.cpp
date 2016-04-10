@@ -2,6 +2,7 @@
 
 #include "game_speed.h"
 #include <iostream>
+#include "config.h"
 
 game_speed::game_speed()
 {
@@ -16,6 +17,14 @@ game_speed::game_speed()
 
 	this->texture = new sf::Texture();
 	this->tileSetTexture = new sf::Image();
+
+	this->font = new sf::Font();
+	this->font->loadFromFile("Graphics/font.ttf");
+}
+
+void game_speed::setDeltaTime(float const dt)
+{
+	this->deltaTime = dt;
 }
 
 void game_speed::Initialize(sf::RenderWindow* window)
@@ -33,12 +42,20 @@ void game_speed::Initialize(sf::RenderWindow* window)
 	this->ImgPlayInactive.copy(*this->tileSetTexture, 0, 0, sf::IntRect(this->tileWidth * 2, 0, this->tileWidth, this->tileHeight), true);
 	this->ImgPlayActive.copy(*this->tileSetTexture, 0, 0, sf::IntRect(this->tileWidth * 3, 0, this->tileWidth, this->tileHeight), true);
 	
+	this->speedText = new sf::Text("1000,00000000", *this->font, 64U);
+	this->speedText->setOrigin(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
+	this->speedText->setPosition(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
+
+	this->fpsText = new sf::Text("1000", *this->font, 64U);
+	this->fpsText->setOrigin(this->fpsText->getGlobalBounds().width / 2, this->fpsText->getGlobalBounds().height / 2);
+	this->fpsText->setPosition(this->fpsText->getGlobalBounds().width / 2 , this->fpsText->getGlobalBounds().height / 2 + this->speedText->getGlobalBounds().height);
+
 	this->generateSprite();
 
 	this->setPosition(window->getSize().x - 384, 0);
 }
 
-bool game_speed::Update(float const dt, sf::RenderWindow* window)
+bool game_speed::Update(sf::RenderWindow* window)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && !this->echapKey) {
 		if (this->gamePause == false) {
@@ -70,16 +87,17 @@ bool game_speed::Update(float const dt, sf::RenderWindow* window)
 		}
 	}
 
-	if(this->gamePause == false){
+	if (this->gamePause == false) {
 		this->gameTick = false;
-		this->deltaTime = dt;
-		this->deltaTimeCounter += dt;
-		this->deltaTimeSecond += dt;
-		if (this->deltaTimeSecond > 1000) {
-			std::cout << "delta time second 2 : " << this->deltaTimeSecond << std::endl;
+		this->deltaTime = this->deltaTime;
+		this->deltaTimeCounter += this->deltaTime;
+		this->deltaTimeSecond += this->deltaTime;
+		if (this->deltaTimeSecond > 1) {
 			this->gameTick = true;
 			this->deltaTimeSecond = 0;
 		}
+		this->speedText->setString(std::to_string(this->deltaTimeCounter));
+		this->fpsText->setString(std::to_string(int(1/ this->deltaTime)));
 	}
 
 	this->echapKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
@@ -108,6 +126,12 @@ int game_speed::getGameSpeed()
 }
 
 float game_speed::getGameSpeedDeltaTime()
+{
+	float tmp = (this->gameSpeed * this->deltaTime);
+	return tmp;
+}
+
+float game_speed::getGameSpeedDeltaTimeWithFps()
 {
 	float tmp = (this->gameSpeed * this->deltaTime);
 	return tmp;

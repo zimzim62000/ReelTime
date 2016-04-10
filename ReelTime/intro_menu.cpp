@@ -2,6 +2,7 @@
 #include "intro_menu.h"
 #include "stage_one.h"
 
+
 void intro_menu::Initialize(sf::RenderWindow* window)
 {
 	this->selected = 0;
@@ -9,7 +10,7 @@ void intro_menu::Initialize(sf::RenderWindow* window)
 	this->font = new sf::Font();
 	this->font->loadFromFile("Graphics/font.ttf");
 
-	this->title = new sf::Text("Drugs & Me", *this->font, 200U);
+	this->title = new sf::Text("Reel Time", *this->font, 200U);
 	this->title->setOrigin(this->title->getGlobalBounds().width / 2, this->title->getGlobalBounds().height / 2);
 	this->title->setPosition(window->getSize().x / 2, window->getSize().y / 8);
 
@@ -22,7 +23,7 @@ void intro_menu::Initialize(sf::RenderWindow* window)
 	this->quit->setPosition(window->getSize().x / 2, window->getSize().y / 2 + this->play->getGlobalBounds().height);
 }
 
-void intro_menu::Update(float const dt, sf::RenderWindow* window)
+void intro_menu::Update(game_speed* game_speed, sf::RenderWindow* window)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !this->upKey)
 	{
@@ -57,7 +58,7 @@ void intro_menu::Update(float const dt, sf::RenderWindow* window)
 	this->downKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
 }
 
-void intro_menu::Render(float const dt, sf::RenderWindow* window)
+void intro_menu::Render(game_speed* game_speed, sf::RenderWindow* window)
 {
 	this->play->setColor(sf::Color::White);
 	this->quit->setColor(sf::Color::White);
