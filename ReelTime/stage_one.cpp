@@ -31,6 +31,7 @@ void stage_one::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 	window->draw(*gameSpeed);
 	window->draw(*gameSpeed->speedText);
 	window->draw(*gameSpeed->fpsText);
+	window->draw(*gameSpeed->counterSecondText);
 }
 
 void stage_one::Destroy(sf::RenderWindow* window)

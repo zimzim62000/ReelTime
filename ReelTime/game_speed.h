@@ -18,6 +18,7 @@ public:
 	void setDeltaTime(float const dt);
 
 	sf::Text* speedText;
+	sf::Text* counterSecondText;
 	sf::Text* fpsText;
 private:
 	void generateSprite();
@@ -29,7 +30,7 @@ private:
 	sf::Texture* texture;
 	sf::Image* tileSetTexture, ImgPauseActive, ImgPauseInactive, ImgPlayActive, ImgPlayInactive;
 
-	float deltaTime, deltaTimeCounter, deltaTimeSecond;
+	float deltaTime, deltaTimeCounter, deltaTimeSecond, deltaTimeSpeed;
 	int gameSpeed, gameSpeedMax, gameSpeedMin, tileWidth, tileHeight;
 	bool gamePause, subtractKey, addKey, echapKey, gameTick;
 };

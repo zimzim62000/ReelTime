@@ -13,7 +13,7 @@ game_speed::game_speed()
 	this->tileWidth = 64;
 	this->tileHeight = 64;
 
-	this->deltaTime = this->deltaTimeCounter = this->deltaTimeSecond = 0;
+	this->deltaTime = this->deltaTimeCounter = this->deltaTimeSecond = this->deltaTimeSpeed = 0;
 
 	this->texture = new sf::Texture();
 	this->tileSetTexture = new sf::Image();
@@ -42,14 +42,19 @@ void game_speed::Initialize(sf::RenderWindow* window)
 	this->ImgPlayInactive.copy(*this->tileSetTexture, 0, 0, sf::IntRect(this->tileWidth * 2, 0, this->tileWidth, this->tileHeight), true);
 	this->ImgPlayActive.copy(*this->tileSetTexture, 0, 0, sf::IntRect(this->tileWidth * 3, 0, this->tileWidth, this->tileHeight), true);
 	
-	this->speedText = new sf::Text("1000,00000000", *this->font, 64U);
+	this->speedText = new sf::Text("1000,000000000", *this->font, 32U);
 	this->speedText->setOrigin(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
-	this->speedText->setPosition(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
-	this->speedText->setColor(sf::Color::Green);
+	this->speedText->setPosition(this->speedText->getGlobalBounds().width / 2, 0);
+	this->speedText->setColor(sf::Color::Yellow);
+
+	this->counterSecondText = new sf::Text("1000,00000000", *this->font, 64U);
+	this->counterSecondText->setOrigin(this->counterSecondText->getGlobalBounds().width / 2, this->counterSecondText->getGlobalBounds().height / 2);
+	this->counterSecondText->setPosition(this->counterSecondText->getGlobalBounds().width / 2, this->counterSecondText->getGlobalBounds().height / 2);
+	this->counterSecondText->setColor(sf::Color::Green);
 
 	this->fpsText = new sf::Text("1000", *this->font, 64U);
 	this->fpsText->setOrigin(this->fpsText->getGlobalBounds().width / 2, this->fpsText->getGlobalBounds().height / 2);
-	this->fpsText->setPosition(this->fpsText->getGlobalBounds().width / 2 , this->fpsText->getGlobalBounds().height / 2 + this->speedText->getGlobalBounds().height);
+	this->fpsText->setPosition(this->fpsText->getGlobalBounds().width / 2 , this->fpsText->getGlobalBounds().height / 2 + this->counterSecondText->getGlobalBounds().height);
 	this->fpsText->setColor(sf::Color::Red);
 
 	this->generateSprite();
@@ -94,11 +99,13 @@ bool game_speed::Update(sf::RenderWindow* window)
 		this->deltaTime = this->deltaTime;
 		this->deltaTimeCounter += this->deltaTime;
 		this->deltaTimeSecond += this->deltaTime;
+		this->deltaTimeSpeed += this->getGameSpeedDeltaTime();
 		if (this->deltaTimeSecond > 1) {
 			this->gameTick = true;
 			this->deltaTimeSecond = 0;
 		}
-		this->speedText->setString(std::to_string(this->deltaTimeCounter));
+		this->speedText->setString(std::to_string(this->deltaTimeSpeed));
+		this->counterSecondText->setString(std::to_string(this->deltaTimeCounter));
 		this->fpsText->setString(std::to_string(int(1/ this->deltaTime)));
 	}
 
