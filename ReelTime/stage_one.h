@@ -3,6 +3,7 @@
 #include "game_state.h"
 #include "entity_manager.h"
 #include "entity.h"
+#include "map_game.h"
 
 
 class stage_one : public tiny_state
@@ -15,4 +16,5 @@ public:
 private:
 	EntityManager* manager;
 	Entity* Test;
+	MapGame* mapGame;
 };

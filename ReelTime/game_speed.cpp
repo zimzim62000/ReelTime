@@ -45,10 +45,12 @@ void game_speed::Initialize(sf::RenderWindow* window)
 	this->speedText = new sf::Text("1000,00000000", *this->font, 64U);
 	this->speedText->setOrigin(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
 	this->speedText->setPosition(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
+	this->speedText->setColor(sf::Color::Green);
 
 	this->fpsText = new sf::Text("1000", *this->font, 64U);
 	this->fpsText->setOrigin(this->fpsText->getGlobalBounds().width / 2, this->fpsText->getGlobalBounds().height / 2);
 	this->fpsText->setPosition(this->fpsText->getGlobalBounds().width / 2 , this->fpsText->getGlobalBounds().height / 2 + this->speedText->getGlobalBounds().height);
+	this->fpsText->setColor(sf::Color::Red);
 
 	this->generateSprite();
 

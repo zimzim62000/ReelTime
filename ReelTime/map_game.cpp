@@ -5,15 +5,13 @@
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
-
-
+#include "utility.h"
 
 using namespace rapidjson;
 
 MapGame::MapGame()
 {
 	this->texture = new sf::Texture();
-	this->tileSetTexture = new sf::Image();
 
 	this->width = 0;
 	this->height = 0;
@@ -25,7 +23,7 @@ void MapGame::Load(std::string filename)
 {
 	std::ifstream mapFile("Graphics/Maps/" + filename);
 	std::string mapFileData((std::istreambuf_iterator<char>(mapFile)),
-		std::istreambuf_iterator<char>());
+	std::istreambuf_iterator<char>());
 	Document mapFileDoc;
 	mapFileDoc.Parse(mapFileData.c_str());
 
@@ -40,10 +38,14 @@ void MapGame::Load(std::string filename)
 	Value& tilesets = mapFileDoc["tilesets"];
 	Value& properties = tilesets[0]["tileproperties"];
 
+	/*
 	Value& blackcase = tilesets[0]["tileproperties"]["0"];
-	this->black_case = new case_game(std::stoi(blackcase["passable"].GetString()), std::stoi(blackcase["weight"].GetString()));
+	this->black_case = new MapTile(std::stoi(blackcase["passable"].GetString()), std::stoi(blackcase["weight"].GetString()), "black.png");
 	Value& whitecase = tilesets[0]["tileproperties"]["3"];
-	this->white_case = new case_game(std::stoi(whitecase["passable"].GetString()), std::stoi(whitecase["weight"].GetString()));
+	this->white_case = new MapTile(std::stoi(whitecase["passable"].GetString()), std::stoi(whitecase["weight"].GetString()), "white.png");
+	*/
+	this->black_case = new MapTile(false, 1000, "black.png");
+	this->white_case = new MapTile(true, 1, "white.png");
 
 	this->data = new int[this->width * this->height];
 
@@ -51,7 +53,7 @@ void MapGame::Load(std::string filename)
 	{
 		for (int i = 0; i < dataArray.Capacity(); i += 1)
 		{
-			this->tileSet = dataArray[i]["name"].GetString();
+			//this->tileSet = dataArray[i]["name"].GetString();
 			Value& dataTileset = dataArray[i]["data"];
 
 			for (int y = 0; y < this->height; y += 1)
@@ -67,18 +69,6 @@ void MapGame::Load(std::string filename)
 
 	this->texture->create(this->width * this->tileWidth, this->height * this->tileHeight);
 
-	this->tileSetTexture->loadFromFile("Graphics/Tilesets/" + this->tileSet);
-
-	sf::Image tileWhite, tileGrey, tileBurn, tileBlack;
-
-	tileBlack.create(this->tileWidth, this->tileHeight);
-	tileWhite.create(this->tileWidth, this->tileHeight);
-
-
-	tileBlack.copy(*this->tileSetTexture, 0, 0, sf::IntRect(0, 0, this->tileWidth, this->tileHeight), true);
-	tileWhite.copy(*this->tileSetTexture, 0, 0, sf::IntRect(this->tileWidth, 0, this->tileWidth, this->tileHeight), true);
-
-
 	for (int y = 0; y < this->height; y += 1)
 	{
 		for (int x = 0; x < this->width; x += 1)
@@ -86,10 +76,10 @@ void MapGame::Load(std::string filename)
 			switch (this->data[x + y *  this->width])
 			{
 			case 1:
-				this->texture->update(tileBlack, x * this->tileWidth, y * this->tileHeight);
+				this->texture->update(*this->white_case, x * this->tileWidth, y * this->tileHeight);
 				break;
 			case 2:
-				this->texture->update(tileWhite, x * this->tileWidth, y * this->tileHeight);
+				this->texture->update(*this->black_case, x * this->tileWidth, y * this->tileHeight);
 				break;
 			default:
 				break;
@@ -98,4 +88,47 @@ void MapGame::Load(std::string filename)
 	}
 
 	this->setTexture(*this->texture);
+}
+
+void MapGame::Update(game_speed* gameSpeed, sf::RenderWindow* window)
+{
+
+}
+
+MapTile* MapGame::getOnThisPositionNoeud(const int x, const int y)
+{
+	switch (this->data[x + y *  this->width])
+	{
+	case 1:
+		return this->white_case;
+		break;
+	case 2:
+	default:
+		return this->black_case;
+		break;
+	}
+}
+
+std::pair<int, int> MapGame::getPositionAvailable()
+{
+	int x, y, attemp = 0;
+	bool find = false;
+	while (find == false)
+	{
+		x = utility::randInt(this->width, false);
+		y = utility::randInt(this->height, false);
+		if (this->getOnThisPositionNoeud(x, y)->passable == true) {
+			return std::pair<int, int>(x, y);
+		}
+		attemp++;
+		if (attemp > 100) {
+			return std::pair<int, int>(0, 0);
+		}
+	}
+}
+
+
+MapGame::~MapGame()
+{
+
 }

@@ -6,6 +6,8 @@
 #include "entity_manager.h"
 #include "game_speed.h"
 #include <queue>
+#include "map_tile.h"
+
 
 typedef enum
 {
@@ -28,7 +30,11 @@ public:
 
 	void Load(std::string filename);
 
-	virtual void Update(game_speed* gameSpeed, sf::RenderWindow* window);
+	void Update(game_speed* gameSpeed, sf::RenderWindow* window);
+
+	MapTile* getOnThisPositionNoeud(const int x, const int y);
+
+	std::pair<int, int> getPositionAvailable();
 
 	~MapGame();
 
@@ -41,4 +47,7 @@ private:
 	sf::Texture* texture;
 	sf::Image* tileSetTexture;
 	EntityManager* entityManager;
+
+	MapTile* black_case;
+	MapTile* white_case;
 };

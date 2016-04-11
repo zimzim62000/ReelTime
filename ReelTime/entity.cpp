@@ -10,6 +10,7 @@ Entity::Entity(const int speed)
 	this->IsAnimate = false;
 	this->IsONScene = false;
 	this->canMove = true;
+	this->busy = false;
 }
 
 Entity::Entity()
@@ -22,6 +23,7 @@ Entity::Entity()
 	this->IsAnimate = false;
 	this->IsONScene = false;
 	this->canMove = true;
+	this->busy = false;
 }
 
 void Entity::setOnScene(const bool enable)
