@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include "game_speed.h"
+#include "utility.h"
 
 
 class Entity : public sf::Sprite
@@ -30,8 +31,6 @@ public:
 
 	void Destroy();
 
-	void AddTarget(const int x, const int y);
-
 	~Entity();
 
 	bool getBusy() const;
@@ -43,10 +42,10 @@ public:
 	int getId() const;
 	void setOnScene(const bool enable);
 	bool getOnScene() const;
+	std::pair<int, int> getTarget();
 
 protected:
-	void MoveOnTarget(float const dt);
-	void AnimateMe(const float dt);
+	void AnimateMe(game_speed* gameSpeed);
 	void SetNewAnimation(std::string nameAnimation);
 	void SetNewRightAnimation(std::string nameAnimation);
 	void SetNewLeftAnimation(std::string nameAnimation);
@@ -54,6 +53,8 @@ protected:
 	int active, groupId, id, speed;
 	bool busy, onMove, IsAnimate, IsONScene, canMove;
 	std::string name;
+
+	std::pair<int, int> target;
 
 	float animateMax;
 	/* Animated none */
@@ -68,6 +69,8 @@ protected:
 	float animateLeftCount;
 	int animateLeftKey;
 	std::vector<std::string> animatedLeft;
+
+	std::queue < std::pair<int, int>> listPoint;
 
 private:
 	sf::Texture* texture;

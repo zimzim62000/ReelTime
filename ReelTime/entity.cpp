@@ -46,11 +46,11 @@ std::string Entity::getName() const
 	return this->name;
 }
 
-void Entity::AnimateMe(const float dt)
+void Entity::AnimateMe(game_speed* gameSpeed)
 {
 	if(this->IsAnimate){
 		if (this->velocity.x > 0 && this->velocity.y == 0) {
-			this->animateRightCount += dt;
+			this->animateRightCount += gameSpeed->getDeltaTime();
 			if (this->animateRightCount >= this->animateMax) {
 				this->animateRightCount = 0;
 				this->animateRightKey++;
@@ -60,7 +60,7 @@ void Entity::AnimateMe(const float dt)
 				this->Load(this->animatedRight.at(this->animateRightKey));
 			}
 		}else if (this->velocity.x < 0 && this->velocity.y == 0) {
-			this->animateLeftCount += dt;
+			this->animateLeftCount += gameSpeed->getDeltaTime();
 			if (this->animateLeftCount >= this->animateMax) {
 				this->animateLeftCount = 0;
 				this->animateLeftKey++;
@@ -70,17 +70,15 @@ void Entity::AnimateMe(const float dt)
 				this->Load(this->animatedLeft.at(this->animateLeftKey));
 			}
 		}else {
-			//if (this->velocity.x == 0 && this->velocity.y == 0) {
-				this->animateCount += dt;
-				if (this->animateCount >= this->animateMax) {
-					this->animateCount = 0;
-					this->animateKey++;
-					if (this->animateKey >= this->animated.size()) {
-						this->animateKey = 0;
-					}
-					this->Load(this->animated.at(this->animateKey));
+			this->animateCount += gameSpeed->getDeltaTime();
+			if (this->animateCount >= this->animateMax) {
+				this->animateCount = 0;
+				this->animateKey++;
+				if (this->animateKey >= this->animated.size()) {
+					this->animateKey = 0;
 				}
-			//}
+				this->Load(this->animated.at(this->animateKey));
+			}
 		}
 	}
 }
@@ -114,7 +112,7 @@ void Entity::Load(std::string filename)
 bool Entity::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
 	this->move(this->velocity * ( this->speed * gameSpeed->getGameSpeedDeltaTime()));
-	this->AnimateMe(gameSpeed->getDeltaTime());
+	this->AnimateMe(gameSpeed);
 	
 	return true;
 }
@@ -145,44 +143,19 @@ void Entity::Destroy()
 Entity::~Entity()
 {
 	delete this->texture;
-	//target.empty();
+	this->listPoint.empty();
 }
 
-/*
-
-void Entity::MoveOnTarget(float const dt)
+std::pair<int, int> Entity::getTarget()
 {
-	if (this->target.size() > 0) {
-		Point* targetOne = this->target.front();
-		if (this->velocity.x == 0 && this->velocity.y == 0) {
-			sf::Vector2f diff = Utility::diffVecteur2(sf::Vector2f(targetOne->x, targetOne->y), sf::Vector2f(this->getPosition().x, this->getPosition().y));
-			this->velocity = Utility::normalizeVecteur(diff);
-		}
-		if (abs(abs(targetOne->x) - abs(this->getPosition().x)) <= abs(this->speed*this->velocity.x*dt) && abs(abs(targetOne->y)- abs(this->getPosition().y)) <= abs(this->speed*this->velocity.y*dt)) {
-			this->setPosition(targetOne->x, targetOne->y);
-			this->velocity.x = 0;
-			this->velocity.y = 0;
-			this->target.pop();
-		}
-	}else{
-		this->onMove = false;
-		this->busy = false;
-	}
+	return this->target;
 }
 
-void Entity::AddTarget(const int x, const int y)
-{
-	this->busy = true;
-	this->onMove = true;
-	Point* pt = new Point(x, y);
-	this->target.push(pt);
-}
 
 bool Entity::getOnMovement() {
 	return this->onMove;
 }
 
-*/
 void Entity::setId(const int id)
 {
 	this->id = id;

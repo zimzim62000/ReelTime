@@ -5,17 +5,6 @@
 #include <iostream>
 #include "map_game.h"
 
-struct noeud {
-	float cout_g, cout_h, cout_f;
-	std::pair<int, int> parent;
-};
-
-struct point {
-	int x, y;
-};
-
-typedef std::map< std::pair<int, int>, noeud> l_noeud;
-
 class PathFinding{
 public:
 	PathFinding();

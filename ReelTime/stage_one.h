@@ -4,6 +4,7 @@
 #include "entity_manager.h"
 #include "entity.h"
 #include "map_game.h"
+#include "camera.h"
 
 
 class stage_one : public tiny_state
@@ -17,4 +18,6 @@ private:
 	EntityManager* manager;
 	Entity* Test;
 	MapGame* mapGame;
+	Camera* camera;
+	sf::CircleShape* target;
 };

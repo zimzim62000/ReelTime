@@ -34,16 +34,6 @@ void MapGame::Load(std::string filename)
 
 	Value& dataArray = mapFileDoc["layers"];
 
-	/* map case*/
-	Value& tilesets = mapFileDoc["tilesets"];
-	Value& properties = tilesets[0]["tileproperties"];
-
-	/*
-	Value& blackcase = tilesets[0]["tileproperties"]["0"];
-	this->black_case = new MapTile(std::stoi(blackcase["passable"].GetString()), std::stoi(blackcase["weight"].GetString()), "black.png");
-	Value& whitecase = tilesets[0]["tileproperties"]["3"];
-	this->white_case = new MapTile(std::stoi(whitecase["passable"].GetString()), std::stoi(whitecase["weight"].GetString()), "white.png");
-	*/
 	this->black_case = new MapTile(false, 1000, "black.png");
 	this->white_case = new MapTile(true, 1, "white.png");
 
@@ -53,7 +43,6 @@ void MapGame::Load(std::string filename)
 	{
 		for (int i = 0; i < dataArray.Capacity(); i += 1)
 		{
-			//this->tileSet = dataArray[i]["name"].GetString();
 			Value& dataTileset = dataArray[i]["data"];
 
 			for (int y = 0; y < this->height; y += 1)
@@ -111,20 +100,17 @@ MapTile* MapGame::getOnThisPositionNoeud(const int x, const int y)
 
 std::pair<int, int> MapGame::getPositionAvailable()
 {
-	int x, y, attemp = 0;
+	int x, y;
 	bool find = false;
 	while (find == false)
 	{
 		x = utility::randInt(this->width, false);
 		y = utility::randInt(this->height, false);
 		if (this->getOnThisPositionNoeud(x, y)->passable == true) {
-			return std::pair<int, int>(x, y);
-		}
-		attemp++;
-		if (attemp > 100) {
-			return std::pair<int, int>(0, 0);
+			find = true;
 		}
 	}
+	return std::pair<int, int>(x, y);
 }
 
 
