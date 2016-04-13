@@ -15,7 +15,7 @@ int main()
 	//init window
 	sf::ContextSettings antialiasing;
 	antialiasing.antialiasingLevel = 32;
-	sf::RenderWindow window(sf::VideoMode(Config::screen_width, Config::screen_height), "Reel Time", sf::Style::Close, antialiasing);
+	sf::RenderWindow window(sf::VideoMode(Config::screen_width, Config::screen_height), "Reel Time", sf::Style::Resize, antialiasing);
 
 
 	//init game speed

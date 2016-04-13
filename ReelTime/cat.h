@@ -16,5 +16,5 @@ private:
 	MapGame* mapGame;
 	EntityManager* entityManager;
 	bool spaceKey, xKey;
-	sf::Vector2f direction;
+	int countMove, countMoveMax;
 };

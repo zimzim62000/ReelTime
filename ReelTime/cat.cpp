@@ -10,17 +10,18 @@ Cat::Cat(EntityManager* entityManager, MapGame* mapGame, float x, float y, const
 	this->groupId = 2;
 	this->entityManager = entityManager;
 	this->mapGame = mapGame;
-	this->direction.x = 0;
-	this->direction.y = 0;
 	this->setOrigin(0, 0);
 	this->IsONScene = true;
+	this->listPoint.empty();
+	this->countMove = 0;
+	this->countMoveMax = 500;
+	this->target = std::pair<int, int>(0, 0);
 }
+
 
 bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
-	if (this->getBusy() == false) {
-		this->busy = true;
-		this->onMove = true;
+	if(this->countMove == 0){
 		PathFinding path;
 		this->target = this->mapGame->getPositionAvailable();
 		path.findRoad(this->mapGame, int(this->getPosition().x/this->mapGame->tileWidth), int(this->getPosition().y / this->mapGame->tileHeight), this->target.first, this->target.second);
@@ -30,50 +31,44 @@ bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 			path.chemin.pop_front();
 		}
 	}
-
-	this->MoveOnTarget(gameSpeed);
-
-	Entity::Update(gameSpeed, window);
-
+	if(this->listPoint.size() != 0){
+		this->MoveOnTarget(gameSpeed);
+		Entity::Update(gameSpeed, window);
+	}
+	if (this->listPoint.size() == 0) {
+		std::cout << "end path" << std::endl;
+		this->countMove = -1;
+	}
+	this->countMove++;
 	return true;
 }
 
 void Cat::AddTarget(const int x, const int y)
 {
-	std::pair<int, int> pair = std::pair<int, int>(x, y);
-	this->listPoint.push(pair);
+	this->listPoint.push(std::pair<int, int>(x, y));
 }
 
 void Cat::MoveOnTarget(game_speed* gameSpeed)
 {
-	if (this->listPoint.size() > 0) {
-		std::pair<int, int> pair = this->listPoint.front();
-
-		if (this->velocity.x == 0 && this->velocity.y == 0) {
-			sf::Vector2f diff = utility::diffVecteur2(sf::Vector2f(pair.first, pair.second), sf::Vector2f(this->getPosition().x, this->getPosition().y));
-			this->velocity = utility::normalizeVecteur(diff);
-			return;
-		}
-		if (abs(abs(pair.first) - abs(this->getPosition().x)) <= abs(this->speed*this->velocity.x*gameSpeed->getGameSpeedDeltaTime())) {
-			this->setPosition(pair.first, pair.second);
-			this->velocity.x = 0;
-			this->velocity.y = 0;
-			this->listPoint.pop();
-			return;
-		}
-		if (abs(abs(pair.second) - abs(this->getPosition().y)) <= abs(this->speed*this->velocity.y*gameSpeed->getGameSpeedDeltaTime())) {
-			this->setPosition(pair.first, pair.second);
-			this->velocity.x = 0;
-			this->velocity.y = 0;
-			this->listPoint.pop();
-			return;
-		}
+	this->targetOne = this->listPoint.front();
+	if (this->countMove == 0 || (this->velocity.x == 0 && this->velocity.y == 0)) {
+		std::cout << "new point " << std::endl;
+		sf::Vector2f diff = utility::diffVecteur2(sf::Vector2f(this->targetOne.first, this->targetOne.second), sf::Vector2f(this->getPosition().x, this->getPosition().y));
+		//utility::dumpVecteur2(diff);
+		sf::Vector2f normalise = utility::normalizeVecteur(diff);
+		//utility::dumpVecteur2(normalise);
+		this->velocity = normalise;
 	}
-	else {
-		this->listPoint.empty();
-		this->target.first = 0;
-		this->target.second = 0;
-		this->onMove = false;
-		this->busy = false;
+	float distanceX = abs(this->targetOne.first - this->getPosition().x);
+	float distanceY = abs(this->targetOne.second - this->getPosition().y);
+	float speedX = abs(this->velocity.x * this->speed * gameSpeed->getGameSpeedDeltaTime());
+	float speedY = abs(this->velocity.y * this->speed * gameSpeed->getGameSpeedDeltaTime());
+
+	//std::cout << "distanceX " << distanceX <<  " distance y " << distanceY << " speedx " << speedX << " speed y "  << speedY << std::endl;
+	if (distanceX <= speedX && distanceY <= speedY) {
+		this->setPosition(this->targetOne.first, this->targetOne.second);
+		this->velocity.x = 0;
+		this->velocity.y = 0;
+		this->listPoint.pop();
 	}
 }

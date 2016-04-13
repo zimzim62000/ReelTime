@@ -43,6 +43,7 @@ public:
 	void setOnScene(const bool enable);
 	bool getOnScene() const;
 	std::pair<int, int> getTarget();
+	std::pair<int, int> getTargetOne();
 
 protected:
 	void AnimateMe(game_speed* gameSpeed);
@@ -55,6 +56,7 @@ protected:
 	std::string name;
 
 	std::pair<int, int> target;
+	std::pair<int, int> targetOne;
 
 	float animateMax;
 	/* Animated none */

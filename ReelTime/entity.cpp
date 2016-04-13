@@ -151,6 +151,11 @@ std::pair<int, int> Entity::getTarget()
 	return this->target;
 }
 
+std::pair<int, int> Entity::getTargetOne()
+{
+	return this->targetOne;
+}
+
 
 bool Entity::getOnMovement() {
 	return this->onMove;

@@ -20,4 +20,5 @@ private:
 	MapGame* mapGame;
 	Camera* camera;
 	sf::CircleShape* target;
+	sf::CircleShape* targetOne;
 };
