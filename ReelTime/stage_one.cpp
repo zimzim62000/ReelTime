@@ -31,8 +31,6 @@ void stage_one::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 
 		Entity* cat = this->manager->Get("cat");
 		this->camera->folowEntity(cat);
-		this->target->setPosition(cat->getTarget().first*this->mapGame->tileWidth, cat->getTarget().second*this->mapGame->tileHeight);
-		this->targetOne->setPosition(cat->getTargetOne().first, cat->getTargetOne().second);
 	}
 }
 
@@ -40,8 +38,6 @@ void stage_one::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 {
 	window->setView(*this->camera);
 	window->draw(*this->mapGame);
-	window->draw(*this->target);
-	window->draw(*this->targetOne);
 
 	this->manager->Render(gameSpeed, window);
 
