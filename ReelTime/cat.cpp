@@ -25,12 +25,14 @@ Cat::Cat(EntityManager* entityManager, MapGame* mapGame, float x, float y, const
 	this->targetOneView->setFillColor(sf::Color::Magenta);
 	this->targetOneView->setRadius(this->mapGame->tileWidth / 4);
 	this->targetOneView->setOrigin(-this->mapGame->tileWidth / 4, -this->mapGame->tileHeight / 4);
+
 }
 
 
 bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 {
 	if(this->countMove == 0){
+		this->pathLine.empty();
 		PathFinding path;
 		bool find = false;
 		while (find == false) {
@@ -47,10 +49,16 @@ bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 		//std::cout << "target x : " << this->target.first << " target y : " << this->target.second << std::endl;
 		path.findRoad(this->mapGame, int(this->getPosition().x/this->mapGame->tileWidth), int(this->getPosition().y / this->mapGame->tileHeight), this->target.first, this->target.second);
 		//std::cout << "chemin size : " << path.chemin.size() << std::endl;
+		int count = 0;
 		while (path.chemin.size() > 0) {
+			int x, y;
 			point pt = path.chemin.front();
-			this->AddTarget(pt.x*this->mapGame->tileWidth, pt.y*this->mapGame->tileHeight);
+			x = pt.x*this->mapGame->tileWidth;
+			y = pt.y*this->mapGame->tileHeight;
+			this->pathLine.push_back(sf::Vertex(sf::Vector2f(x+this->mapGame->tileWidth/2, y+this->mapGame->tileHeight / 2), sf::Color::Red));
+			this->AddTarget(x, y);
 			path.chemin.pop_front();
+			count++;
 		}
 	}
 	if(this->listPoint.size() != 0){
@@ -71,6 +79,15 @@ bool Cat::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 	//window->setView(defaultView);
 	window->draw(*this->targetView);
 	window->draw(*this->targetOneView);
+	/*
+	for (int i(0); i < this->pathLine.size(); i++)
+	{
+		window->draw(&this->pathLine.at(i), 1, sf::Lines);
+	}
+	*/
+	if(this->pathLine.size()  > 0){
+		window->draw(&this->pathLine.at(0), this->pathLine.size(), sf::LinesStrip);
+	}
 
 	return true;
 }
@@ -104,5 +121,6 @@ void Cat::MoveOnTarget(game_speed* gameSpeed)
 		this->velocity.x = 0;
 		this->velocity.y = 0;
 		this->listPoint.pop();
+		this->pathLine.erase(this->pathLine.begin());
 	}
 }

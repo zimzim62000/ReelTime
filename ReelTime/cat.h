@@ -20,4 +20,6 @@ private:
 	int countMove, countMoveMax;
 	sf::CircleShape* targetView;
 	sf::CircleShape* targetOneView;
+
+	std::vector<sf::Vertex> pathLine;
 };
