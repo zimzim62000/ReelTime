@@ -8,7 +8,7 @@ void stage_one::Initialize(sf::RenderWindow* window)
 {
 	this->manager = new EntityManager();
 	this->mapGame = new MapGame();
-	this->mapGame->Load("map.json");
+	this->mapGame->Load("map2.json");
 
 	this->Menu = new MenuInterface();
 
