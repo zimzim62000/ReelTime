@@ -29,6 +29,7 @@ bool EntityManager::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 void EntityManager::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 {
 	for (auto& iterator : this->entities) {
+		iterator.second->Render(gameSpeed, window);
 		window->draw(*iterator.second);
 	}
 }

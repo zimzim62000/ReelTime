@@ -116,6 +116,12 @@ bool Entity::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 	
 	return true;
 }
+
+bool Entity::Render(game_speed* gameSpeed, sf::RenderWindow* window)
+{
+	return true;
+}
+
 void Entity::Collision(Entity* entity)
 {
 }

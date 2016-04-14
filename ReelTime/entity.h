@@ -21,6 +21,8 @@ public:
 
 	virtual bool Update(game_speed* gameSpeed, sf::RenderWindow* window);
 
+	virtual bool Render(game_speed* gameSpeed, sf::RenderWindow* window);
+
 	bool CheckCollision(Entity* entity);
 
 	virtual void Collision(Entity* entity);

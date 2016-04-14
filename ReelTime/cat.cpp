@@ -35,11 +35,12 @@ bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 		bool find = false;
 		while (find == false) {
 			this->target = this->mapGame->getPositionAvailable();
-			if (this->target.first * this->mapGame->tileWidth != this->getPosition().x && this->target.second * this->mapGame->tileHeight != this->getPosition().y) {
+			float x, y;
+			x = this->target.first * this->mapGame->tileWidth;
+			y = this->target.second * this->mapGame->tileHeight;
+			this->targetView->setPosition(x, y);
+			if (x != this->getPosition().x && y != this->getPosition().y) {
 				find = true;
-			}
-			else {
-				std::cout << "FAILLLLLLLLURE" << std::endl;
 			}
 		}
 
@@ -64,6 +65,16 @@ bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 	return true;
 }
 
+bool Cat::Render(game_speed* gameSpeed, sf::RenderWindow* window)
+{
+	//sf::View defaultView = window->getDefaultView();
+	//window->setView(defaultView);
+	window->draw(*this->targetView);
+	window->draw(*this->targetOneView);
+
+	return true;
+}
+
 void Cat::AddTarget(const int x, const int y)
 {
 	this->listPoint.push(std::pair<int, int>(x, y));
@@ -72,6 +83,7 @@ void Cat::AddTarget(const int x, const int y)
 void Cat::MoveOnTarget(game_speed* gameSpeed)
 {
 	this->targetOne = this->listPoint.front();
+	this->targetOneView->setPosition(this->targetOne.first, this->targetOne.second);
 	if (this->countMove == 0 || (this->velocity.x == 0 && this->velocity.y == 0)) {
 		//std::cout << "new point " << std::endl;
 		sf::Vector2f diff = utility::diffVecteur2(sf::Vector2f(this->targetOne.first, this->targetOne.second), sf::Vector2f(this->getPosition().x, this->getPosition().y));
