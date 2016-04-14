@@ -11,6 +11,7 @@ void stage_one::Initialize(sf::RenderWindow* window)
 	this->mapGame->Load("map.json");
 
 	std::pair<int, int> pair = this->mapGame->getPositionAvailable();
+	std::cout << "cat x : " << pair.first << " cat y : " << pair.second << std::endl;
 	Cat* cat = new Cat(this->manager, this->mapGame, pair.first*this->mapGame->tileWidth, pair.second*this->mapGame->tileHeight, 50);
 	this->manager->Add("cat", cat);
 
@@ -25,6 +26,8 @@ void stage_one::Initialize(sf::RenderWindow* window)
 	this->targetOne = new sf::CircleShape();
 	this->targetOne->setFillColor(sf::Color::Cyan);
 	this->targetOne->setRadius(this->mapGame->tileWidth / 4);
+	this->targetOne->setOrigin(-this->mapGame->tileWidth / 4, -this->mapGame->tileHeight / 4);
+
 }
 
 void stage_one::Update(game_speed* gameSpeed, sf::RenderWindow* window)
