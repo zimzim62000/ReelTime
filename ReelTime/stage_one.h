@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "map_game.h"
 #include "camera.h"
+#include "menu_interface.h"
 
 
 class stage_one : public tiny_state
@@ -21,4 +22,5 @@ private:
 	Camera* camera;
 	sf::CircleShape* target;
 	sf::CircleShape* targetOne;
+	MenuInterface* Menu;
 };

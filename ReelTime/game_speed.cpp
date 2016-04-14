@@ -42,19 +42,19 @@ void game_speed::Initialize(sf::RenderWindow* window)
 	this->ImgPlayInactive.copy(*this->tileSetTexture, 0, 0, sf::IntRect(this->tileWidth * 2, 0, this->tileWidth, this->tileHeight), true);
 	this->ImgPlayActive.copy(*this->tileSetTexture, 0, 0, sf::IntRect(this->tileWidth * 3, 0, this->tileWidth, this->tileHeight), true);
 	
-	this->speedText = new sf::Text("1000,000000000", *this->font, 32U);
-	this->speedText->setOrigin(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
-	this->speedText->setPosition(this->speedText->getGlobalBounds().width / 2, 0);
+	this->speedText = new sf::Text("1000,000000000", *this->font, 28U);
+	//this->speedText->setOrigin(this->speedText->getGlobalBounds().width / 2, this->speedText->getGlobalBounds().height / 2);
+	this->speedText->setPosition(10, -this->speedText->getGlobalBounds().height / 2);
 	this->speedText->setColor(sf::Color::Yellow);
 
-	this->counterSecondText = new sf::Text("1000,00000000", *this->font, 64U);
-	this->counterSecondText->setOrigin(this->counterSecondText->getGlobalBounds().width / 2, this->counterSecondText->getGlobalBounds().height / 2);
-	this->counterSecondText->setPosition(this->counterSecondText->getGlobalBounds().width / 2, this->counterSecondText->getGlobalBounds().height / 2);
+	this->counterSecondText = new sf::Text("1000,00000000", *this->font, 28U);
+	//this->counterSecondText->setOrigin(this->counterSecondText->getGlobalBounds().width / 2, this->counterSecondText->getGlobalBounds().height / 2);
+	this->counterSecondText->setPosition(10, this->counterSecondText->getGlobalBounds().height / 2);
 	this->counterSecondText->setColor(sf::Color::Green);
 
-	this->fpsText = new sf::Text("1000", *this->font, 64U);
-	this->fpsText->setOrigin(this->fpsText->getGlobalBounds().width / 2, this->fpsText->getGlobalBounds().height / 2);
-	this->fpsText->setPosition(this->fpsText->getGlobalBounds().width / 2 , this->fpsText->getGlobalBounds().height / 2 + this->counterSecondText->getGlobalBounds().height);
+	this->fpsText = new sf::Text("1000", *this->font, 28U);
+	//this->fpsText->setOrigin(this->fpsText->getGlobalBounds().width / 2, this->fpsText->getGlobalBounds().height / 2);
+	this->fpsText->setPosition(10 , this->fpsText->getGlobalBounds().height / 2 + this->counterSecondText->getGlobalBounds().height);
 	this->fpsText->setColor(sf::Color::Red);
 
 	this->generateSprite();

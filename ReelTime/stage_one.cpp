@@ -10,24 +10,16 @@ void stage_one::Initialize(sf::RenderWindow* window)
 	this->mapGame = new MapGame();
 	this->mapGame->Load("map.json");
 
+	this->Menu = new MenuInterface();
+
 	std::pair<int, int> pair = this->mapGame->getPositionAvailable();
 	std::cout << "cat x : " << pair.first << " cat y : " << pair.second << std::endl;
-	Cat* cat = new Cat(this->manager, this->mapGame, pair.first*this->mapGame->tileWidth, pair.second*this->mapGame->tileHeight, 50);
+	Cat* cat = new Cat(this->manager, this->mapGame, pair.first*this->mapGame->tileWidth, pair.second*this->mapGame->tileHeight, 100);
 	this->manager->Add("cat", cat);
 
 	this->camera = new Camera();
 	this->camera->reset(sf::FloatRect(0, 0, window->getSize().x, window->getSize().y));
 	this->camera->folowEntity(cat);
-
-	this->target = new sf::CircleShape();
-	this->target->setFillColor(sf::Color::Blue);
-	this->target->setRadius(this->mapGame->tileWidth / 2);
-
-	this->targetOne = new sf::CircleShape();
-	this->targetOne->setFillColor(sf::Color::Cyan);
-	this->targetOne->setRadius(this->mapGame->tileWidth / 4);
-	this->targetOne->setOrigin(-this->mapGame->tileWidth / 4, -this->mapGame->tileHeight / 4);
-
 }
 
 void stage_one::Update(game_speed* gameSpeed, sf::RenderWindow* window)
@@ -47,13 +39,15 @@ void stage_one::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 void stage_one::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 {
 	window->setView(*this->camera);
-
 	window->draw(*this->mapGame);
-	this->manager->Render(gameSpeed, window);
-
 	window->draw(*this->target);
 	window->draw(*this->targetOne);
 
+	this->manager->Render(gameSpeed, window);
+
+	sf::View defaultView = window->getDefaultView();
+	window->setView(defaultView);
+	window->draw(*this->Menu);
 	window->draw(*gameSpeed);
 	window->draw(*gameSpeed->speedText);
 	window->draw(*gameSpeed->fpsText);

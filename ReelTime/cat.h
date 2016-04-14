@@ -17,4 +17,6 @@ private:
 	EntityManager* entityManager;
 	bool spaceKey, xKey;
 	int countMove, countMoveMax;
+	sf::CircleShape* targetView;
+	sf::CircleShape* targetOneView;
 };
