@@ -38,7 +38,7 @@ bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 		Entity::Update(gameSpeed, window);
 	}
 	if (this->listPoint.size() == 0) {
-		std::cout << "end path" << std::endl;
+		//std::cout << "end path" << std::endl;
 		this->countMove = -1;
 	}
 	this->countMove++;
@@ -66,9 +66,9 @@ void Cat::MoveOnTarget(game_speed* gameSpeed)
 	float speedX = abs(this->velocity.x * this->speed * gameSpeed->getGameSpeedDeltaTime());
 	float speedY = abs(this->velocity.y * this->speed * gameSpeed->getGameSpeedDeltaTime());
 
-	std::cout << "distanceX " << distanceX <<  " distance y " << distanceY << " speedx " << speedX << " speed y "  << speedY << std::endl;
+	//std::cout << "distanceX " << distanceX <<  " distance y " << distanceY << " speedx " << speedX << " speed y "  << speedY << std::endl;
 	if (distanceX <= speedX && distanceY <= speedY) {
-		std::cout << "aye aye" << std::endl;
+		//std::cout << "aye aye" << std::endl;
 		this->setPosition(this->targetOne.first, this->targetOne.second);
 		this->velocity.x = 0;
 		this->velocity.y = 0;
