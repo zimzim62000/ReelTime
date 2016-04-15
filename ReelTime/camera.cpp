@@ -6,8 +6,8 @@ void Camera::folowEntity(Entity* entity) {
 	this->setPosition(entity->getPosition().x + entity->getGlobalBounds().width / 2, entity->getPosition().y + entity->getGlobalBounds().height / 2);
 	a = this->x - this->getSize().x / 2;
 	b = this->y - this->getSize().y / 2;
-	if (a < 0)a = 0;
-	if (b < 0)b = 0;
+	//if (a < 0)a = 0;
+	//if (b < 0)b = 0;
 	this->reset(sf::FloatRect(a, b, this->getSize().x, this->getSize().y));
 }
 

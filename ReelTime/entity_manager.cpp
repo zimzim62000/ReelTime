@@ -55,5 +55,10 @@ Entity* EntityManager::GetAtThisPosition(const int x, const int y, const int til
 			return iterator.second;
 		}
 	}
-	return new Entity();
+	return NULL;
+}
+
+std::unordered_map<std::string, Entity*> EntityManager::getEntities()
+{
+	return this->entities;
 }

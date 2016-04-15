@@ -14,6 +14,8 @@ public:
 	void Render(game_speed* gameSpeed, sf::RenderWindow* window);
 	Entity* Get(std::string name);
 	Entity* GetAtThisPosition(const int x, const int y, const int tileWidth, const int tileHeight);
+
+	std::unordered_map<std::string, Entity*> getEntities();
 private:
 	std::unordered_map<std::string, Entity*> entities;
 	int numberId;

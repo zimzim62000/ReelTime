@@ -3,19 +3,22 @@
 #include <string> 
 #include <math.h>
 #include "cat.h"
+#include "building.h"
 
 void stage_one::Initialize(sf::RenderWindow* window)
 {
 	this->manager = new EntityManager();
 	this->mapGame = new MapGame();
-	this->mapGame->Load("map2.json");
+	this->mapGame->Load("map.json");
 
 	this->Menu = new MenuInterface();
 
 	std::pair<int, int> pair = this->mapGame->getPositionAvailable();
-	std::cout << "cat x : " << pair.first << " cat y : " << pair.second << std::endl;
 	Cat* cat = new Cat(this->manager, this->mapGame, pair.first*this->mapGame->tileWidth, pair.second*this->mapGame->tileHeight, 100);
 	this->manager->Add("cat", cat);
+
+	Building* building = new Building(this->manager, this->mapGame, 256, -192);
+	this->manager->Add("building", building);
 
 	this->camera = new Camera();
 	this->camera->reset(sf::FloatRect(0, 0, window->getSize().x, window->getSize().y));

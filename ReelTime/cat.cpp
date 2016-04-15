@@ -7,7 +7,7 @@ Cat::Cat(EntityManager* entityManager, MapGame* mapGame, float x, float y, const
 {
 	this->Load("doudou.png");
 	this->setPosition(x, y);
-	this->groupId = 2;
+	this->groupId = 1;
 	this->entityManager = entityManager;
 	this->mapGame = mapGame;
 	this->setOrigin(0, 0);
@@ -16,6 +16,14 @@ Cat::Cat(EntityManager* entityManager, MapGame* mapGame, float x, float y, const
 	this->countMove = 0;
 	this->countMoveMax = 500;
 	this->target = std::pair<int, int>(0, 0);
+	this->stock = 0;
+
+	this->font = new sf::Font();
+	this->font->loadFromFile("Graphics/font.ttf");
+
+	this->stockText = new sf::Text("000", *this->font, 28U);
+	this->stockText->setPosition(this->getPosition());
+	this->stockText->setColor(sf::Color::Yellow);
 
 	this->targetView = new sf::CircleShape();
 	this->targetView->setFillColor(sf::Color::Blue);
@@ -64,12 +72,16 @@ bool Cat::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 	if(this->listPoint.size() != 0){
 		this->MoveOnTarget(gameSpeed);
 		Entity::Update(gameSpeed, window);
+		this->stockText->setPosition(this->getPosition());
 	}
 	if (this->listPoint.size() == 0) {
 		//std::cout << "end path" << std::endl;
 		this->countMove = -1;
 	}
 	this->countMove++;
+
+	this->CheckCollision();
+
 	return true;
 }
 
@@ -79,6 +91,7 @@ bool Cat::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 	//window->setView(defaultView);
 	window->draw(*this->targetView);
 	window->draw(*this->targetOneView);
+	window->draw(*this->stockText);
 	/*
 	for (int i(0); i < this->pathLine.size(); i++)
 	{
@@ -89,7 +102,7 @@ bool Cat::Render(game_speed* gameSpeed, sf::RenderWindow* window)
 		window->draw(&this->pathLine.at(0), this->pathLine.size(), sf::LinesStrip);
 	}
 
-	return true;
+	return Entity::Render(gameSpeed, window);
 }
 
 void Cat::AddTarget(const int x, const int y)
@@ -123,4 +136,44 @@ void Cat::MoveOnTarget(game_speed* gameSpeed)
 		this->listPoint.pop();
 		this->pathLine.erase(this->pathLine.begin());
 	}
+}
+
+void Cat::Collision(Entity* entity)
+{
+	switch (entity->getGroupID()) {
+		case 2:
+			this->collisionBuilding(entity);
+			break;
+		default:
+			std::cout << entity->getGroupID() << std::endl;
+			break;
+	}
+}
+
+
+void Cat::collisionBuilding(Entity* entity)
+{
+	if (this->getGlobalBounds().intersects(entity->entrance->getGlobalBounds())) {
+		this->stock += entity->getStock();
+		this->stockText->setString(std::to_string(this->stock));
+		entity->Collision(this);
+	}
+
+}
+
+
+bool Cat::CheckCollision()
+{
+	for (auto& iterator : this->entityManager->getEntities()) {
+		if (iterator.second->getId() != this->getId() && this->CaseX == iterator.second->CaseX && this->CaseY == iterator.second->CaseY)
+		{
+			this->Collision(iterator.second);
+		}
+	}
+	return false;
+}
+
+bool Cat::CheckCollision(Entity* entity)
+{
+	return this->getGlobalBounds().intersects(entity->getGlobalBounds());
 }

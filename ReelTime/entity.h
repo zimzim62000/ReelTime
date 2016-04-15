@@ -23,13 +23,17 @@ public:
 
 	virtual bool Render(game_speed* gameSpeed, sf::RenderWindow* window);
 
-	bool CheckCollision(Entity* entity);
+	virtual bool CheckCollision(Entity* entity);
+
+	virtual bool CheckCollision();
 
 	virtual void Collision(Entity* entity);
 
-	int GroupID();
+	int getGroupID();
 
 	int Active();
+
+	virtual int getStock();
 
 	void Destroy();
 
@@ -46,6 +50,9 @@ public:
 	bool getOnScene() const;
 	std::pair<int, int> getTarget();
 	std::pair<int, int> getTargetOne();
+
+	int CaseX, CaseY, CaseBase;
+	sf::RectangleShape* entrance;
 
 protected:
 	void AnimateMe(game_speed* gameSpeed);

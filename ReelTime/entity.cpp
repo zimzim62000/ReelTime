@@ -11,6 +11,8 @@ Entity::Entity(const int speed)
 	this->IsONScene = false;
 	this->canMove = true;
 	this->busy = false;
+
+	this->CaseBase = 640;
 }
 
 Entity::Entity()
@@ -24,6 +26,13 @@ Entity::Entity()
 	this->IsONScene = false;
 	this->canMove = true;
 	this->busy = false;
+
+	this->CaseBase = 640;
+}
+
+int Entity::getStock()
+{
+	return 0;
 }
 
 void Entity::setOnScene(const bool enable)
@@ -114,6 +123,9 @@ bool Entity::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 	this->move(this->velocity * ( this->speed * gameSpeed->getGameSpeedDeltaTime()));
 	this->AnimateMe(gameSpeed);
 	
+	this->CaseX = this->getPosition().x / this->CaseBase;
+	this->CaseY = this->getPosition().y / this->CaseBase;
+
 	return true;
 }
 
@@ -126,12 +138,17 @@ void Entity::Collision(Entity* entity)
 {
 }
 
-bool Entity::CheckCollision(Entity* entity)
+bool Entity::CheckCollision()
 {
-	return this->getGlobalBounds().intersects(entity->getGlobalBounds());
+	return false;
 }
 
-int Entity::GroupID()
+bool Entity::CheckCollision(Entity* entity)
+{
+	return false;
+}
+
+int Entity::getGroupID()
 {
 	return this->groupId;
 }
