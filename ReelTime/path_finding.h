@@ -15,6 +15,7 @@ public:
 	void ajouter_liste_fermee(std::pair<int, int>& p);
 	void retrouver_chemin();
 	float distance(int x1, int y1, int x2, int y2);
+	void resetPath();
 
 	l_noeud liste_ouverte;
 	l_noeud liste_fermee;
@@ -22,5 +23,6 @@ public:
 
 	struct point arrivee;
 	noeud depart;
+
 private:
 };

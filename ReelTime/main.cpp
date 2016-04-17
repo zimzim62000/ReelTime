@@ -12,6 +12,7 @@ int main()
 	srand(time(NULL));
 
 
+
 	//init window
 	sf::ContextSettings antialiasing;
 	antialiasing.antialiasingLevel = 32;

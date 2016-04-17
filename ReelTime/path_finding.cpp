@@ -1,49 +1,56 @@
 #include "path_finding.h"
 
-typedef std::map< std::pair<int, int>, noeud> l_noeud;
-
 PathFinding::PathFinding() {
 
 }
 
+void PathFinding::resetPath()
+{
+	std::cout << "reset path " << std::endl;
+	this->liste_ouverte.empty();
+	this->liste_fermee.empty();
+	this->chemin.empty();	
+	this->arrivee.x = 0;
+	this->arrivee.y = 0;
+	this->depart.cout_f = 0;
+	this->depart.cout_g = 0;
+	this->depart.cout_h = 0;
+}
+
 void PathFinding::findRoad(MapGame* map, const int start_x, const int start_y, const int end_x, const int end_y)
 {
-	arrivee.x = end_x;
-	arrivee.y = end_y;
+	this->arrivee.x = end_x;
+	this->arrivee.y = end_y;
 
-	depart.parent.first = start_x;
-	depart.parent.second = start_y;
+	this->depart.parent.first = start_x;
+	this->depart.parent.second = start_y;
 
-	std::pair <int, int> courant;
+	std::pair <int, int> courant(this->depart.parent.first, this->depart.parent.second);
 
 	/* déroulement de l'algo A* */
-
-	courant.first = start_x;
-	courant.second = start_y;
 	// ajout de courant dans la liste ouverte
 
-	liste_ouverte[courant] = depart;
-	ajouter_liste_fermee(courant);
-	ajouter_cases_adjacentes(courant, map);
+	this->liste_ouverte[courant] = this->depart;
+	this->ajouter_liste_fermee(courant);
+	this->ajouter_cases_adjacentes(courant, map);
 
-	while (!((courant.first == arrivee.x) && (courant.second == arrivee.y))
+	while (!((courant.first == this->arrivee.x) && (courant.second == this->arrivee.y))
 		&&
-		(!liste_ouverte.empty())
+		(!this->liste_ouverte.empty())
 		) {
 
 
 		// on cherche le meilleur noeud de la liste ouverte, on sait qu'elle n'est pas vide donc il existe
-		courant = meilleur_noeud(liste_ouverte);
+		courant = this->meilleur_noeud(this->liste_ouverte);
 
 		// on le passe dans la liste fermee, il ne peut pas déjà y être
-		ajouter_liste_fermee(courant);
+		this->ajouter_liste_fermee(courant);
 
-		ajouter_cases_adjacentes(courant, map);
+		this->ajouter_cases_adjacentes(courant, map);
 	}
 
-	if ((courant.first == arrivee.x) && (courant.second == arrivee.y)) {
-		retrouver_chemin();
-
+	if ((courant.first == this->arrivee.x) && (courant.second == this->arrivee.y)) {
+		this->retrouver_chemin();
 	}
 	else {
 		/* pas de solution */
@@ -98,19 +105,19 @@ void PathFinding::ajouter_cases_adjacentes(std::pair <int, int>& n, MapGame* map
 			{
 				std::pair<int, int> it(i, j);
 
-				if (!deja_present_dans_liste(it, liste_fermee)) {
+				if (!this->deja_present_dans_liste(it, this->liste_fermee)) {
 					/* le noeud n'est pas déjà présent dans la liste fermée */
 
-					tmp.cout_g = liste_fermee[n].cout_g + distance(i, j, n.first, n.second) + map->getOnThisPositionNoeud(i, j)->weight;
-					tmp.cout_h = distance(i, j, arrivee.x, arrivee.y);
+					tmp.cout_g = this->liste_fermee[n].cout_g + this->distance(i, j, n.first, n.second) + map->getOnThisPositionNoeud(i, j)->weight;
+					tmp.cout_h = this->distance(i, j, this->arrivee.x, this->arrivee.y);
 					tmp.cout_f = tmp.cout_g + tmp.cout_h;
 					tmp.parent = n;
 
-					if (deja_present_dans_liste(it, liste_ouverte)) {
+					if (this->deja_present_dans_liste(it, liste_ouverte)) {
 						/* le noeud est déjà présent dans la liste ouverte, il faut comparer les couts */
-						if (tmp.cout_f < liste_ouverte[it].cout_f) {
+						if (tmp.cout_f < this->liste_ouverte[it].cout_f) {
 							/* si le nouveau chemin est meilleur, on update */
-							liste_ouverte[it] = tmp;
+							this->liste_ouverte[it] = tmp;
 						}
 
 						/* le noeud courant a un moins bon chemin, on ne change rien */
@@ -119,7 +126,7 @@ void PathFinding::ajouter_cases_adjacentes(std::pair <int, int>& n, MapGame* map
 					}
 					else {
 						/* le noeud n'est pas présent dans la liste ouverte, on l'ajoute */
-						liste_ouverte[std::pair<int, int>(i, j)] = tmp;
+						this->liste_ouverte[std::pair<int, int>(i, j)] = tmp;
 					}
 				}
 			}
@@ -129,33 +136,33 @@ void PathFinding::ajouter_cases_adjacentes(std::pair <int, int>& n, MapGame* map
 
 
 void PathFinding::ajouter_liste_fermee(std::pair<int, int>& p) {
-	noeud& n = liste_ouverte[p];
-	liste_fermee[p] = n;
+	noeud& n = this->liste_ouverte[p];
+	this->liste_fermee[p] = n;
 
 	// il faut le supprimer de la liste ouverte, ce n'est plus une solution explorable
-	if (liste_ouverte.erase(p) == 0)
+	if (this->liste_ouverte.erase(p) == 0)
 		std::cout << "n'apparait pas dans la liste ouverte, impossible à supprimer" << std::endl;
 	return;
 }
 
 void PathFinding::retrouver_chemin() {
 	// l'arrivée est le dernier élément de la liste fermée.
-	noeud& tmp = liste_fermee[std::pair<int, int>(arrivee.x, arrivee.y)];
+	noeud& tmp = this->liste_fermee[std::pair<int, int>(arrivee.x, arrivee.y)];
 
 	struct point n;
 	std::pair<int, int> prec;
-	n.x = arrivee.x;
-	n.y = arrivee.y;
+	n.x = this->arrivee.x;
+	n.y = this->arrivee.y;
 	prec.first = tmp.parent.first;
 	prec.second = tmp.parent.second;
-	chemin.push_front(n);
+	this->chemin.push_front(n);
 
-	while (prec != std::pair<int, int>(depart.parent.first, depart.parent.second)) {
+	while (prec != std::pair<int, int>(this->depart.parent.first, this->depart.parent.second)) {
 		n.x = prec.first;
 		n.y = prec.second;
-		chemin.push_front(n);
+		this->chemin.push_front(n);
 
-		tmp = liste_fermee[tmp.parent];
+		tmp = this->liste_fermee[tmp.parent];
 		prec.first = tmp.parent.first;
 		prec.second = tmp.parent.second;
 	}

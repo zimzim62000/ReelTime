@@ -15,7 +15,7 @@ public:
 	//bool CheckCollision();
 	void Collision(Entity* entity);
 	int getStock();
-private:
+protected:
 	MapGame* mapGame;
 	EntityManager* entityManager;
 
