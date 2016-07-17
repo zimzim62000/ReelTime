@@ -38,6 +38,7 @@ bool Building::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 	this->timer += gameSpeed->getGameSpeedDeltaTime();
 
 	if(this->stock < this->stockMax){
+		this->full = false;
 		if (this->timer > this->timerNextAnimated) {
 
 			if (this->timer > this->timerNextAnimated) {
@@ -56,6 +57,7 @@ bool Building::Update(game_speed* gameSpeed, sf::RenderWindow* window)
 	else {
 		this->stockText->setColor(sf::Color::Red);
 		this->stockText->setString("Full");
+		this->full = true;
 	}
 
 	return true;

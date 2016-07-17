@@ -11,6 +11,7 @@ Entity::Entity(const int speed)
 	this->IsONScene = false;
 	this->canMove = true;
 	this->busy = false;
+	this->full = false;
 
 	this->CaseBase = 640;
 }
@@ -182,6 +183,10 @@ std::pair<int, int> Entity::getTargetOne()
 
 bool Entity::getOnMovement() {
 	return this->onMove;
+}
+
+bool Entity::GetFull() {
+	return this->full;
 }
 
 void Entity::setId(const int id)

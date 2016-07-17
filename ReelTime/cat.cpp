@@ -177,6 +177,7 @@ bool Cat::CheckCollision(Entity* entity)
 void Cat::createTask()
 {
 	std::cout << "New Task ! " << std::endl;
+
 	int choice = utility::randInt(10, false);
 	switch (choice)
 	{
@@ -196,6 +197,7 @@ void Cat::createTask()
 		break;
 	}
 	this->taskText->setString(this->todoList->getFisrtTask()->name);
+	
 }
 
 void Cat::taskGoToTarget()
@@ -204,13 +206,20 @@ void Cat::taskGoToTarget()
 	float x, y;
 	int xx, yy;
 	this->pathLine.empty();
+	Entity* house = this->entityManager->Get("building");
 	while (find == false) {
-		this->target = this->mapGame->getPositionAvailable();
-		x = this->target.first * this->mapGame->tileWidth;
-		y = this->target.second * this->mapGame->tileHeight;
-		if (x != this->getPosition().x && y != this->getPosition().y) {
-			this->targetView->setPosition(x, y);
+		if (false){//house->GetFull()) {
+			this->target.first = house->getPosition().x / this->mapGame->tileWidth;
+			this->target.second = house->getPosition().y / this->mapGame->tileHeight;
 			find = true;
+		}else{
+			this->target = this->mapGame->getPositionAvailable();
+			x = this->target.first * this->mapGame->tileWidth;
+			y = this->target.second * this->mapGame->tileHeight;
+			if (x != this->getPosition().x && y != this->getPosition().y) {
+				this->targetView->setPosition(x, y);
+				find = true;
+			}
 		}
 	}
 

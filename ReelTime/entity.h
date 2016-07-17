@@ -53,6 +53,7 @@ public:
 
 	int CaseX, CaseY, CaseBase;
 	sf::RectangleShape* entrance;
+	bool GetFull();
 
 protected:
 	void AnimateMe(game_speed* gameSpeed);
@@ -61,7 +62,7 @@ protected:
 	void SetNewLeftAnimation(std::string nameAnimation);
 
 	int active, groupId, id, speed;
-	bool busy, onMove, IsAnimate, IsONScene, canMove;
+	bool busy, onMove, IsAnimate, IsONScene, canMove, full;
 	std::string name;
 
 	std::pair<int, int> target;
